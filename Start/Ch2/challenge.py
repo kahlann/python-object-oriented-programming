@@ -12,14 +12,50 @@
 # For stocks: "Ticker: Company -- $Price"
 # For bonds: "description: duration'yr' : $price : yieldamt%"
 
-class Asset():
-    pass
+# Import library for abstract classes and methods
+from abc import ABC, abstractmethod
 
-class Stock():
-    pass
+# Define abstract class that assets can inherit from 
+class Asset(ABC):
+    # Get price
+    def __init__(self, price):
+        super().__init__()
+        self.price = price
+    # getDescription method - must be overwritten by subclasses
+    @abstractmethod
+    def get_description(self):
+        pass
 
-class Bond():
-    pass
+# Stocks inherit the price attribute from Asset class
+class Stock(Asset):
+    # Initialise with a price, company name, ticker
+    def __init__(self, ticker, price, company):
+        # Get price from inherited class
+        super().__init__(price)
+        # Get ticker and company name
+        self.ticker = ticker
+        self.company = company
+    
+    # Method to get description
+    def get_description(self):
+        # Return string in the correct format
+        return f"{self.ticker}: {self.company} -- ${self.price}"
+
+# Bonds inherit from Asset class
+class Bond(Asset):
+    # Initialise with a price, description, duration, yield
+    def __init__(self, price, desc, dur, yields):
+        # Get price from inherited class
+        super().__init__(price)
+        # Get description, duration, yield
+        self.description = desc
+        self.duration = dur
+        self.yields = yields
+    
+    # Method to get description
+    def get_description(self):
+        # Return string in the correct format
+        return f"{self.description} : {self.duration}yr : ${self.price} : {self.yields}%"
 
 
 # ~~~~~~~~~ TEST CODE ~~~~~~~~~
