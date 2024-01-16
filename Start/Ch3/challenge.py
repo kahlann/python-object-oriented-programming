@@ -23,6 +23,16 @@ class Stock(Asset):
         self.company = company
         self.ticker = ticker
 
+    # Overwrite the lt method so that the stocks can be sorted by price
+    def __lt__(self, value):
+        if not isinstance(value, Stock):
+            raise ValueError("Can't compare Stocks to non-Stocks")
+        return self.price < value.price
+
+    # Overwrite the str method to give a useful summary of the object
+    def __str__(self):
+        return f"{self.ticker}: {self.company} -- ${self.price}"
+
 
 class Bond(Asset):
     def __init__(self, price, description, duration, yieldamt):
@@ -31,6 +41,15 @@ class Bond(Asset):
         self.duration = duration
         self.yieldamt = yieldamt
 
+    # Overwrite the lt method so that the bonds can be sorted by yield
+    def __lt__(self, value):
+        if not isinstance(value, Bond):
+            raise ValueError("Can't compare Bonds to non-Bonds")
+        return self.price < value.price
+
+    # Overwrite the str method to give a useful summary of the object
+    def __str__(self):
+        return f"{self.description} : {self.duration} years : {self.price} : {self.yieldamt}"
 
 # ~~~~~~~~~ TEST CODE ~~~~~~~~~
 stocks = [
