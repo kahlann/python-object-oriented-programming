@@ -5,23 +5,54 @@
 # The subclasses are required to override the magic method
 # that makes them sortable
 
-class Asset():
-    pass
-    
+# Import dataclass functionality
+from dataclasses import dataclass
+# Import abstract method
+from abc import ABC, abstractmethod
 
+# Make abstract class that the Stocks and Bonds classes can inherit from
+@dataclass
+class Asset(ABC):
+    price: float
+
+    # Abstract method - must be overwritten by the child classes
+    @abstractmethod
+    def __lt__(self, value):
+        pass
+
+# Class for Stocks
+@dataclass
 class Stock(Asset):
-    pass
+    ticker: str
+    company: str
 
+    # Overwrite the __lt__ method to enable sorting 
+    def __lt__(self, other):
+        if not isinstance(other, Stock):
+            raise ValueError("Can't compare a Stocks to non-Stocks")
+        return self.price < other.price
 
+# Class for Bonds
+@dataclass
 class Bond(Asset):
-    pass
+    description: str
+    length: int
+    yieldamt: float
+
+    # Overwrite the __lt__ method to enable sorting 
+    def __lt__(self, other):
+        if not isinstance(other, Bond):
+            raise ValueError("Can't compare a Bonds to non-Bonds")
+        return self.price < other.price
 
 # ~~~~~~~~~ TEST CODE ~~~~~~~~~
+    
+# Rearranged the input data - inherited attributes come first!
 stocks = [
-    Stock("MSFT", 342.0, "Microsoft Corp"),
-    Stock("GOOG", 135.0, "Google Inc"),
-    Stock("META", 275.0, "Meta Platforms Inc"),
-    Stock("AMZN", 120.0, "Amazon Inc")
+    Stock(342.0, "MSFT", "Microsoft Corp"),
+    Stock(135.0, "GOOG", "Google Inc"),
+    Stock(275.0, "META", "Meta Platforms Inc"),
+    Stock(120.0, "AMZN", "Amazon Inc")
 ]
 
 bonds = [
